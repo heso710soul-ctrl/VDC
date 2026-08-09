@@ -17,6 +17,7 @@
  *   runnerUp: "準優勝者の名前",
  *   highlight: "大会の見どころ・エピソードを一言で。",
  *   youtubeId: "dQw4w9WgXcQ",  // ← YouTube動画のID（省略すると動画なしで表示）
+ *   sheetUrl: "",              // ← スプレッドシートの共有リンク（省略するとリンクなしで表示）
  *   results: [
  *     { rank: "優勝",   name: "優勝者の名前",   note: "決勝は接戦のダブルアウト" },
  *     { rank: "準優勝", name: "準優勝者の名前", note: "" },
@@ -30,23 +31,28 @@
  * ---- youtubeIdの調べ方 ----
  * YouTubeの動画URLが
  *   https://www.youtube.com/watch?v=ABC12345XYZ
- * の場合、"v=" のあとの "ABC12345XYZ" の部分が youtubeId です。
- * 短縮URL（https://youtu.be/ABC12345XYZ）の場合も、最後の
- * "ABC12345XYZ" の部分をそのまま使ってください。
+ * の場合、"v=" のあとの "ABC12345XYZ" の部分（"v="は含めない）が
+ * youtubeId です。短縮URL（https://youtu.be/ABC12345XYZ）の場合も、
+ * 最後の "ABC12345XYZ" の部分をそのまま使ってください。
+ *
+ * ---- sheetUrlの作り方 ----
+ * スプレッドシートを開き「共有」→「リンクを取得」で発行される
+ * URL（閲覧権限）をそのまま貼り付けてください。パネル内に
+ * 「スコア詳細をスプレッドシートで見る」という外部リンクボタンが表示されます。
  */
  
 const TOURNAMENTS = [
   {
     number: 1,
-    title: "VDC 1",
-    date: "2024/12/1",
+    title: "第1回 大会",
+    date: "2023年 春",
     participants: 12,
     format: "シングルス トーナメント戦（501）",
     champion: "優勝者名を入力",
     runnerUp: "準優勝者名を入力",
     highlight: "記念すべき第1回。常連メンバーが集まり、和気あいあいとした雰囲気の中でスタートしました。",
     youtubeId: "",
-    sheetUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRh1mjSzmXjtD8MCa2VAmLITajHwtJP01g9908YjaUQnjhQwNqNQ4Yek2KlvycrpLWEDHnRugDECq3g/pub?gid=1176057709&single=true&output=csv",
+    sheetUrl: "https://docs.google.com/spreadsheets/d/1rK9XDu3kzhjNbys61Eulars7zoEsVwdTXbLRI0cTvXc/edit?usp=sharing",
     results: [
       { rank: "優勝", name: "優勝者名を入力", note: "" },
       { rank: "準優勝", name: "準優勝者名を入力", note: "" },
@@ -55,8 +61,8 @@ const TOURNAMENTS = [
   },
   {
     number: 2,
-    title: "VDC 2",
-    date: "2025/4/13",
+    title: "第2回 大会",
+    date: "2023年 秋",
     participants: 14,
     format: "シングルス トーナメント戦（501）",
     champion: "優勝者名を入力",
@@ -72,8 +78,8 @@ const TOURNAMENTS = [
   },
   {
     number: 3,
-    title: "VDC 3",
-    date: "2025/8/17",
+    title: "第3回 大会",
+    date: "2024年 春",
     participants: 16,
     format: "ダブルス トーナメント戦（501）",
     champion: "優勝ペア名を入力",
@@ -89,8 +95,8 @@ const TOURNAMENTS = [
   },
   {
     number: 4,
-    title: "VDC 4",
-    date: "2025/12/7",
+    title: "第4回 大会",
+    date: "2024年 秋",
     participants: 18,
     format: "シングルス トーナメント戦（301）",
     champion: "優勝者名を入力",
@@ -122,3 +128,4 @@ const TOURNAMENTS = [
     ],
   },
 ];
+ 
