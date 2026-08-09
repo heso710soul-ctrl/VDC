@@ -14,18 +14,18 @@
   --dart-green:   #3f5b3f;
   --brass:        #c8a24a;
   --brass-light:  #e6c876;
-
+ 
   --font-display: 'Shippori Mincho B1', serif;
   --font-body: 'Zen Kaku Gothic New', sans-serif;
-
+ 
   --radius-plank: 6px;
   --shadow-deep: 0 10px 30px rgba(0,0,0,0.45);
 }
-
+ 
 *{ box-sizing: border-box; }
-
+ 
 html{ scroll-behavior: smooth; }
-
+ 
 body{
   margin:0;
   font-family: var(--font-body);
@@ -33,9 +33,9 @@ body{
   color: var(--cream);
   line-height: 1.8;
 }
-
+ 
 a{ color: inherit; }
-
+ 
 /* =========================================================
    共通：木目の質感
 ========================================================= */
@@ -49,7 +49,7 @@ a{ color: inherit; }
       transparent 3px
     );
 }
-
+ 
 /* =========================================================
    ヒーロー
 ========================================================= */
@@ -63,7 +63,7 @@ a{ color: inherit; }
   border-bottom: 6px solid var(--brass);
   box-shadow: inset 0 -18px 30px -20px rgba(0,0,0,0.6);
 }
-
+ 
 .hero__grain{
   position:absolute; inset:0;
   background-image: repeating-linear-gradient(
@@ -76,7 +76,7 @@ a{ color: inherit; }
   opacity:.5;
   pointer-events:none;
 }
-
+ 
 .hero__inner{
   position:relative;
   max-width: 1080px;
@@ -87,9 +87,9 @@ a{ color: inherit; }
   gap: 48px;
   flex-wrap: wrap;
 }
-
+ 
 .hero__text{ max-width: 520px; }
-
+ 
 .hero__eyebrow{
   font-family: var(--font-body);
   letter-spacing: .28em;
@@ -98,7 +98,7 @@ a{ color: inherit; }
   color: var(--brass-light);
   margin: 0 0 18px;
 }
-
+ 
 .hero__title{
   font-family: var(--font-display);
   font-weight: 800;
@@ -108,14 +108,14 @@ a{ color: inherit; }
   color: var(--cream);
   text-shadow: 0 4px 0 rgba(0,0,0,0.35);
 }
-
+ 
 .hero__lead{
   color: var(--pine);
   font-size: 15px;
   margin: 0 0 32px;
   opacity: .9;
 }
-
+ 
 .hero__cta{
   display:inline-block;
   text-decoration:none;
@@ -130,23 +130,23 @@ a{ color: inherit; }
 }
 .hero__cta:hover{ transform: translateY(-2px); }
 .hero__cta:active{ transform: translateY(2px); box-shadow: 0 3px 0 var(--dart-red-dark); }
-
+ 
 /* ダーツボード */
 .hero__board{ flex: 0 0 auto; }
 .dartboard{ width: min(280px, 44vw); height: auto; filter: drop-shadow(0 18px 24px rgba(0,0,0,0.55)); }
-
+ 
 .board-ring--rim{ fill: var(--wood-mid); }
 .board-ring--dark{ fill: #17100b; }
 .seg--light{ fill: var(--cream); }
 .seg--dark{ fill: #17100b; }
 .board-ring--outerbull{ fill: var(--dart-green); }
 .board-ring--bull{ fill: var(--dart-red); }
-
+ 
 .dart__shaft{ stroke: var(--brass-light); stroke-width: 3; stroke-linecap: round; }
 .dart__tip{ fill: var(--dart-red); }
 .dart--1{ opacity: .95; }
 .dart--2{ opacity: .95; }
-
+ 
 /* =========================================================
    大会セクション
 ========================================================= */
@@ -155,9 +155,9 @@ a{ color: inherit; }
   margin: 0 auto;
   padding: 72px 24px 40px;
 }
-
+ 
 .tournaments__intro{ text-align:center; margin-bottom: 40px; }
-
+ 
 .section-title{
   font-family: var(--font-display);
   font-size: clamp(26px, 4vw, 34px);
@@ -165,7 +165,7 @@ a{ color: inherit; }
   margin: 0 0 8px;
 }
 .section-sub{ color: var(--pine); opacity:.75; font-size: 14px; margin:0; }
-
+ 
 /* タブ：木のプレート */
 .tabs{
   display:flex;
@@ -174,7 +174,7 @@ a{ color: inherit; }
   justify-content:center;
   margin-bottom: 28px;
 }
-
+ 
 .tab{
   appearance:none;
   cursor:pointer;
@@ -191,15 +191,15 @@ a{ color: inherit; }
   box-shadow: 0 4px 10px rgba(0,0,0,0.35);
   transition: transform .15s ease, background .2s ease, border-color .2s ease;
 }
-
+ 
 .tab:hover{ transform: translateY(-2px); }
-
+ 
 .tab[aria-selected="true"]{
   color: var(--wood-darkest);
   background: linear-gradient(180deg, var(--brass-light), var(--brass));
   border-bottom-color: var(--dart-red-dark);
 }
-
+ 
 .tab__num{
   display:block;
   font-size: 11px;
@@ -208,10 +208,10 @@ a{ color: inherit; }
   margin-bottom: 2px;
   font-family: var(--font-body);
 }
-
+ 
 /* アコーディオン（パネル） */
 .panels{ display:flex; flex-direction:column; gap: 14px; }
-
+ 
 .panel{
   border-radius: 10px;
   overflow: hidden;
@@ -219,7 +219,7 @@ a{ color: inherit; }
   background: var(--wood-dark);
   box-shadow: var(--shadow-deep);
 }
-
+ 
 .panel__inner{
   display: grid;
   grid-template-rows: 0fr;
@@ -227,16 +227,16 @@ a{ color: inherit; }
   background: linear-gradient(180deg, var(--wood-mid) 0%, var(--wood-dark) 100%);
 }
 .panel.is-open .panel__inner{ grid-template-rows: 1fr; }
-
+ 
 .panel__body{
   overflow: hidden;
   min-height: 0;
 }
-
+ 
 .panel__content{
   padding: 26px 26px 30px;
 }
-
+ 
 .panel__meta{
   display:flex;
   flex-wrap: wrap;
@@ -247,7 +247,7 @@ a{ color: inherit; }
   opacity: .85;
 }
 .panel__meta span b{ color: var(--brass-light); font-weight:700; }
-
+ 
 .panel__highlight{
   font-size: 14px;
   color: var(--cream);
@@ -256,7 +256,27 @@ a{ color: inherit; }
   margin: 0 0 22px;
   opacity: .95;
 }
-
+ 
+/* 大会動画（レスポンシブ16:9） */
+.video-wrap{
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 */
+  margin: 0 0 24px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,0.4);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  background: var(--wood-darkest);
+}
+.video-wrap iframe{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+ 
 .result-table{
   width:100%;
   border-collapse: collapse;
@@ -279,7 +299,26 @@ a{ color: inherit; }
   white-space: nowrap;
 }
 .result-table tr:first-child td.rank{ color: var(--brass-light); }
-
+ 
+/* スプレッドシート外部リンク */
+.sheet-link{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 22px;
+  padding: 11px 20px;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--wood-darkest);
+  background: linear-gradient(180deg, var(--brass-light), var(--brass));
+  border-radius: 999px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.35);
+  transition: transform .15s ease;
+}
+.sheet-link:hover{ transform: translateY(-2px); }
+.sheet-link__icon{ width: 16px; height: 16px; flex: 0 0 auto; }
+ 
 /* タブヘッダー（プレート上部・常時表示） */
 .panel__head{
   display:flex;
@@ -307,7 +346,7 @@ a{ color: inherit; }
   color: var(--brass-light);
 }
 .panel.is-open .panel__chevron{ transform: rotate(180deg); }
-
+ 
 /* =========================================================
    フッター
 ========================================================= */
@@ -318,7 +357,7 @@ a{ color: inherit; }
   opacity:.55;
   font-size: 13px;
 }
-
+ 
 /* =========================================================
    レスポンシブ
 ========================================================= */
@@ -327,13 +366,13 @@ a{ color: inherit; }
   .hero__lead{ margin-left:auto; margin-right:auto; }
   .tab{ min-width: 78px; padding: 10px 14px; font-size: 13px; }
 }
-
+ 
 /* フォーカス可視性 */
 :focus-visible{
   outline: 2px solid var(--brass-light);
   outline-offset: 2px;
 }
-
+ 
 /* モーション低減設定を尊重 */
 @media (prefers-reduced-motion: reduce){
   html{ scroll-behavior:auto; }
