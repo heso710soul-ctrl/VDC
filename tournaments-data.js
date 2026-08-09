@@ -46,6 +46,7 @@ const TOURNAMENTS = [
     runnerUp: "準優勝者名を入力",
     highlight: "記念すべき第1回。常連メンバーが集まり、和気あいあいとした雰囲気の中でスタートしました。",
     youtubeId: "",
+    sheetUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRh1mjSzmXjtD8MCa2VAmLITajHwtJP01g9908YjaUQnjhQwNqNQ4Yek2KlvycrpLWEDHnRugDECq3g/pub?gid=1176057709&single=true&output=csv",
     results: [
       { rank: "優勝", name: "優勝者名を入力", note: "" },
       { rank: "準優勝", name: "準優勝者名を入力", note: "" },
@@ -62,6 +63,7 @@ const TOURNAMENTS = [
     runnerUp: "準優勝者名を入力",
     highlight: "参加者が増え、盛り上がりを見せた第2回。",
     youtubeId: "",
+    sheetUrl: "",
     results: [
       { rank: "優勝", name: "優勝者名を入力", note: "" },
       { rank: "準優勝", name: "準優勝者名を入力", note: "" },
@@ -78,6 +80,7 @@ const TOURNAMENTS = [
     runnerUp: "準優勝ペア名を入力",
     highlight: "初のダブルス形式を導入。チーム戦ならではの盛り上がりに。",
     youtubeId: "",
+    sheetUrl: "",
     results: [
       { rank: "優勝", name: "優勝ペア名を入力", note: "" },
       { rank: "準優勝", name: "準優勝ペア名を入力", note: "" },
@@ -94,6 +97,7 @@ const TOURNAMENTS = [
     runnerUp: "準優勝者名を入力",
     highlight: "過去最多の参加人数を記録。接戦の連続となった大会。",
     youtubeId: "",
+    sheetUrl: "",
     results: [
       { rank: "優勝", name: "優勝者名を入力", note: "" },
       { rank: "準優勝", name: "準優勝者名を入力", note: "" },
@@ -110,6 +114,7 @@ const TOURNAMENTS = [
     runnerUp: "準優勝者名を入力",
     highlight: "節目の第5回。決勝は最後のダブルアウトまでもつれる名勝負に。",
     youtubeId: "v=UhzB-Zm2g7I",
+    sheetUrl: "",
     results: [
       { rank: "優勝", name: "優勝者名を入力", note: "" },
       { rank: "準優勝", name: "準優勝者名を入力", note: "" },
