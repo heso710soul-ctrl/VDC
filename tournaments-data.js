@@ -113,7 +113,7 @@ const TOURNAMENTS = [
     champion: "優勝者名を入力",
     runnerUp: "準優勝者名を入力",
     highlight: "節目の第5回。決勝は最後のダブルアウトまでもつれる名勝負に。",
-    youtubeId: "v=UhzB-Zm2g7I",
+    youtubeId: "UhzB-Zm2g7I",
     sheetUrl: "",
     results: [
       { rank: "優勝", name: "優勝者名を入力", note: "" },
