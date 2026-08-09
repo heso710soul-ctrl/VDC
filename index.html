@@ -4,13 +4,27 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VORZ BAR Darts Contest</title>
+ 
+<!-- ▼ LINEやX、Facebook等で共有したときのプレビュー用（OGP） -->
+<!-- og:url と og:image は実際の公開URLに合わせて書き換えてください -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://heso710soul-ctrl.github.io/VDC/">
+<meta property="og:title" content="VORZ BAR Darts Contest">
+<meta property="og:description" content="大会一覧 気になる回のプレートをめくって、結果をチェック。">
+<meta property="og:image" content="https://heso710soul-ctrl.github.io/VDC/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+<!-- ▲ ここまでOGP -->
+ 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
+ 
   <!-- ===== ヘッダー / ヒーロー ===== -->
   <header class="hero">
     <div class="hero__grain"></div>
@@ -19,11 +33,11 @@
         <p class="hero__eyebrow">TOURNAMENT ARCHIVE</p>
         <h1 class="hero__title">VORZ BAR<br>Darts Contest</h1>
         <p class="hero__lead">
-          VORZ BAR で行われたダーツ大会の記録<br>
+          VORZ BARで行われたダーツ大会の記録。<br>
         </p>
         <a href="#tournaments" class="hero__cta">記録を見る ↓</a>
       </div>
-
+ 
       <div class="hero__board" aria-hidden="true">
         <svg viewBox="0 0 320 320" class="dartboard">
           <circle cx="160" cy="160" r="150" class="board-ring board-ring--rim"/>
@@ -58,26 +72,27 @@
       </div>
     </div>
   </header>
-
+ 
   <!-- ===== 大会セクション ===== -->
   <main id="tournaments" class="tournaments">
     <div class="tournaments__intro">
       <h2 class="section-title">大会一覧</h2>
       <p class="section-sub">気になる回のプレートをめくって、結果をチェック。</p>
     </div>
-
+ 
     <!-- タブ（木のプレート） -->
     <nav class="tabs" role="tablist" aria-label="大会タブ" id="tabList"></nav>
-
+ 
     <!-- アコーディオン本体 -->
     <div class="panels" id="panelList"></div>
   </main>
-
+ 
   <footer class="site-footer">
     <p></p>
   </footer>
-
+ 
   <script src="tournaments-data.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
+ 
