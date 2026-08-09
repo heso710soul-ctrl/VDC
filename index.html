@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ダーツバー大会アーカイブ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ===== ヘッダー / ヒーロー ===== -->
+  <header class="hero">
+    <div class="hero__grain"></div>
+    <div class="hero__inner">
+      <div class="hero__text">
+        <p class="hero__eyebrow">TOURNAMENT ARCHIVE</p>
+        <h1 class="hero__title">大会の<br>あゆみ</h1>
+        <p class="hero__lead">
+          行きつけのダーツバーで積み重ねてきた大会の記録。<br>
+          木のカウンター越しに交わした真剣勝負を、ここに刻んでいく。
+        </p>
+        <a href="#tournaments" class="hero__cta">記録を見る ↓</a>
+      </div>
+
+      <div class="hero__board" aria-hidden="true">
+        <svg viewBox="0 0 320 320" class="dartboard">
+          <circle cx="160" cy="160" r="150" class="board-ring board-ring--rim"/>
+          <circle cx="160" cy="160" r="140" class="board-ring board-ring--dark"/>
+          <!-- セグメント -->
+          <g class="board-segments">
+            <path d="M160,160 L160,20 A140,140 0 0,1 226.9,49.4 Z" class="seg seg--light"/>
+            <path d="M160,160 L226.9,49.4 A140,140 0 0,1 270.6,93.1 Z" class="seg seg--dark"/>
+            <path d="M160,160 L270.6,93.1 A140,140 0 0,1 300,160 Z" class="seg seg--light"/>
+            <path d="M160,160 L300,160 A140,140 0 0,1 270.6,226.9 Z" class="seg seg--dark"/>
+            <path d="M160,160 L270.6,226.9 A140,140 0 0,1 226.9,270.6 Z" class="seg seg--light"/>
+            <path d="M160,160 L226.9,270.6 A140,140 0 0,1 160,300 Z" class="seg seg--dark"/>
+            <path d="M160,160 L160,300 A140,140 0 0,1 93.1,270.6 Z" class="seg seg--light"/>
+            <path d="M160,160 L93.1,270.6 A140,140 0 0,1 49.4,226.9 Z" class="seg seg--dark"/>
+            <path d="M160,160 L49.4,226.9 A140,140 0 0,1 20,160 Z" class="seg seg--light"/>
+            <path d="M160,160 L20,160 A140,140 0 0,1 49.4,93.1 Z" class="seg seg--dark"/>
+            <path d="M160,160 L49.4,93.1 A140,140 0 0,1 93.1,49.4 Z" class="seg seg--light"/>
+            <path d="M160,160 L93.1,49.4 A140,140 0 0,1 160,20 Z" class="seg seg--dark"/>
+          </g>
+          <circle cx="160" cy="160" r="55" class="board-ring board-ring--outerbull"/>
+          <circle cx="160" cy="160" r="24" class="board-ring board-ring--bull"/>
+          <!-- ダーツ -->
+          <g class="dart dart--1">
+            <line x1="60" y1="260" x2="150" y2="172" class="dart__shaft"/>
+            <circle cx="150" cy="172" r="3.5" class="dart__tip"/>
+          </g>
+          <g class="dart dart--2">
+            <line x1="270" y1="55" x2="176" y2="148" class="dart__shaft"/>
+            <circle cx="176" cy="148" r="3.5" class="dart__tip"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 大会セクション ===== -->
+  <main id="tournaments" class="tournaments">
+    <div class="tournaments__intro">
+      <h2 class="section-title">大会一覧</h2>
+      <p class="section-sub">気になる回のプレートをめくって、結果をチェック。</p>
+    </div>
+
+    <!-- タブ（木のプレート） -->
+    <nav class="tabs" role="tablist" aria-label="大会タブ" id="tabList"></nav>
+
+    <!-- アコーディオン本体 -->
+    <div class="panels" id="panelList"></div>
+  </main>
+
+  <footer class="site-footer">
+    <p>大会が増えるたび、この木の記録も少しずつ厚みを増していく。</p>
+  </footer>
+
+  <script src="tournaments-data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
