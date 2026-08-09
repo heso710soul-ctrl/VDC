@@ -38,8 +38,8 @@
 const TOURNAMENTS = [
   {
     number: 1,
-    title: "第1回 大会",
-    date: "2023年 春",
+    title: "VDC 1",
+    date: "2024/12/1",
     participants: 12,
     format: "シングルス トーナメント戦（501）",
     champion: "優勝者名を入力",
@@ -54,8 +54,8 @@ const TOURNAMENTS = [
   },
   {
     number: 2,
-    title: "第2回 大会",
-    date: "2023年 秋",
+    title: "VDC 2",
+    date: "2025/4/13",
     participants: 14,
     format: "シングルス トーナメント戦（501）",
     champion: "優勝者名を入力",
@@ -70,8 +70,8 @@ const TOURNAMENTS = [
   },
   {
     number: 3,
-    title: "第3回 大会",
-    date: "2024年 春",
+    title: "VDC 3",
+    date: "2025/8/17",
     participants: 16,
     format: "ダブルス トーナメント戦（501）",
     champion: "優勝ペア名を入力",
@@ -86,8 +86,8 @@ const TOURNAMENTS = [
   },
   {
     number: 4,
-    title: "第4回 大会",
-    date: "2024年 秋",
+    title: "VDC 4",
+    date: "2025/12/7",
     participants: 18,
     format: "シングルス トーナメント戦（301）",
     champion: "優勝者名を入力",
