@@ -132,9 +132,5 @@
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;");
   }
- 
-  // 初期表示：一番新しい回（配列の最後）を開いておく
-  const latest = sorted[sorted.length - 1];
-  openPanel(latest.number, true);
 })();
  
