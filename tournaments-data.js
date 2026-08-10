@@ -83,7 +83,7 @@ const TOURNAMENTS = [
     participants: 16,
     champion: "トラ",
     runnerUp: "倉又",
-    highlight: "トラさん、３連覇！！しのちゃん、初のハットトリック！",
+    highlight: "トラさん、３連覇！！",
     youtubeId: "4DfwDJOFMkA",
     sheetUrl: "https://docs.google.com/spreadsheets/d/1WLJYzEco-JwD1NjYqNKkKIQUPcV6sJbMumCMufrxAPs/edit?usp=sharing",
     results: [
@@ -100,7 +100,7 @@ const TOURNAMENTS = [
     participants: 16,
     champion: "足利",
     runnerUp: "へそ",
-    highlight: "足利さん、悲願の優勝！！",
+    highlight: "足利さん、悲願の優勝！！しの、初のハットトリック！",
     youtubeId: "WICQCq0fSyA",
     sheetUrl: "https://docs.google.com/spreadsheets/d/1ZGoOoXccdQ1hg3eSyjZzxnGY5Poeb8zToB_DZwHWt0o/edit?usp=sharing",
     results: [
