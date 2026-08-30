@@ -134,7 +134,7 @@ const TOURNAMENTS = [
    runnerUp: "",
    highlight: "",
    youtubeId: "",  // ← YouTube動画のID（省略すると動画なしで表示）
-   sheetUrl: "https://docs.google.com/spreadsheets/d/1YQH1P0FJ-p-uJe4w-LcDtyW9gc-2HxSj/edit?usp=sharing&ouid=113547619669760266130&rtpof=true&sd=true", 
+   sheetUrl: "https://docs.google.com/spreadsheets/d/1-DeYSgLQ8UV6zZLR5iGkX6kC2KQdL7bq1TibNCIVKYU/edit?usp=sharing", 
    results: [
      { rank: "優勝",   name: "優勝者の名前",   note: "決勝は接戦のダブルアウト" },
      { rank: "準優勝", name: "準優勝者の名前", note: "" },
