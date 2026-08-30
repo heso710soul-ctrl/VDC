@@ -130,15 +130,15 @@ const TOURNAMENTS = [
    title: "VDC 6", // ← スペースを半角1つに統一
    date: "2026/8/30", // ← 「年」を削除
    participants: 16,
-   champion: "",
-   runnerUp: "",
-   highlight: "",
+   champion: "足利",
+   runnerUp: "さよ",
+   highlight: "最年少がまさかの決勝進出！！",
    youtubeId: "",  // ← YouTube動画のID（省略すると動画なしで表示）
    sheetUrl: "https://docs.google.com/spreadsheets/d/1-DeYSgLQ8UV6zZLR5iGkX6kC2KQdL7bq1TibNCIVKYU/edit?usp=sharing", 
    results: [
-     { rank: "優勝",   name: "優勝者の名前",   note: "決勝は接戦のダブルアウト" },
-     { rank: "準優勝", name: "準優勝者の名前", note: "" },
-     { rank: "3位",   name: "3位の名前",       note: "" },
+     { rank: "優勝",   name: "足利",   note: "" },
+     { rank: "準優勝", name: "さよ", note: "" },
+     { rank: "最高得点（countup）：520",   name: "足利",       note: "" },
    ],
   },
 ];
