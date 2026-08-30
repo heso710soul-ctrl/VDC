@@ -51,10 +51,7 @@
  
     panel.innerHTML = `
       <button type="button" class="panel__head" aria-expanded="false">
-        <span>
-          <span class="panel__head-title">${escapeHtml(t.title)}</span>
-          <div class="panel__head-sub">${escapeHtml(t.date || "")}・優勝: ${escapeHtml(t.champion || "―")}</div>
-        </span>
+        <div class="panel__head-text"><span class="panel__head-title">${escapeHtml(t.title)}</span><div class="panel__head-sub">${escapeHtml(t.date || "")}・優勝: ${escapeHtml(t.champion || "―")}</div></div>
         <svg class="panel__chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
