@@ -130,9 +130,9 @@ const TOURNAMENTS = [
    title: "VDC 6", // ← スペースを半角1つに統一
    date: "2026/8/30", // ← 「年」を削除
    participants: 16,
-   champion: "優勝者の名前",
-   runnerUp: "準優勝者の名前",
-   highlight: "大会の見どころ・エピソードを一言で。",
+   champion: "",
+   runnerUp: "",
+   highlight: "",
    youtubeId: "",  // ← YouTube動画のID（省略すると動画なしで表示）
    sheetUrl: "https://docs.google.com/spreadsheets/d/1YQH1P0FJ-p-uJe4w-LcDtyW9gc-2HxSj/edit?usp=sharing&ouid=113547619669760266130&rtpof=true&sd=true", 
    results: [
