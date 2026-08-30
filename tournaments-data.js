@@ -127,8 +127,8 @@ const TOURNAMENTS = [
   },
   { 
    number: 6,
-   title: "VDC 6",
-   date: "2026年/8/30",
+   title: "VDC 6", // ← スペースを半角1つに統一
+   date: "2026/8/30", // ← 「年」を削除
    participants: 16,
    champion: "優勝者の名前",
    runnerUp: "準優勝者の名前",
