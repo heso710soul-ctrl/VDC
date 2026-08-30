@@ -127,19 +127,19 @@ const TOURNAMENTS = [
   },
   { 
    number: 6,
-    title: "VDC 6",
-    date: "2026年/830",
-    participants: 16,
-    champion: "優勝者の名前",
-    runnerUp: "準優勝者の名前",
-    highlight: "大会の見どころ・エピソードを一言で。",
-    youtubeId: "",  // ← YouTube動画のID（省略すると動画なしで表示）
-    sheetUrl: "https://docs.google.com/spreadsheets/d/1YQH1P0FJ-p-uJe4w-LcDtyW9gc-2HxSj/edit?usp=sharing&ouid=113547619669760266130&rtpof=true&sd=true", 
-    results: [
-      { rank: "優勝",   name: "優勝者の名前",   note: "決勝は接戦のダブルアウト" },
-      { rank: "準優勝", name: "準優勝者の名前", note: "" },
-      { rank: "3位",   name: "3位の名前",       note: "" },
-    ],
+   title: "VDC 6",
+   date: "2026年/8/30",
+   participants: 16,
+   champion: "優勝者の名前",
+   runnerUp: "準優勝者の名前",
+   highlight: "大会の見どころ・エピソードを一言で。",
+   youtubeId: "",  // ← YouTube動画のID（省略すると動画なしで表示）
+   sheetUrl: "https://docs.google.com/spreadsheets/d/1YQH1P0FJ-p-uJe4w-LcDtyW9gc-2HxSj/edit?usp=sharing&ouid=113547619669760266130&rtpof=true&sd=true", 
+   results: [
+     { rank: "優勝",   name: "優勝者の名前",   note: "決勝は接戦のダブルアウト" },
+     { rank: "準優勝", name: "準優勝者の名前", note: "" },
+     { rank: "3位",   name: "3位の名前",       note: "" },
+   ],
   },
 ];
  
