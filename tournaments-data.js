@@ -133,7 +133,7 @@ const TOURNAMENTS = [
    champion: "足利",
    runnerUp: "さよ",
    highlight: "最年少がまさかの決勝進出！！",
-   youtubeId: "",  // ← YouTube動画のID（省略すると動画なしで表示）
+   youtubeId: "6KNdjdmwNQM",  // ← YouTube動画のID（省略すると動画なしで表示）
    sheetUrl: "https://docs.google.com/spreadsheets/d/1-DeYSgLQ8UV6zZLR5iGkX6kC2KQdL7bq1TibNCIVKYU/edit?usp=sharing", 
    results: [
      { rank: "優勝",   name: "足利",   note: "" },
