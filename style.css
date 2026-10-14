@@ -1,410 +1,396 @@
 /* =========================================================
-   VDC — 夜のダーツバー：ボードの緑フェルト × 真鍮の細線
-   レイアウト：大きな「VDC」とラインアートのボード → 歴代年表 → 選んだ回の詳細
+   VDC — 白黒写真のざらつきと、得点板の数字
+   レイアウト：全面写真スライド＋巨大な「VDC」 → 得点板のような大会リスト（行をタップで展開）
+   色は白と黒だけ。強調は「反転（白地に黒）」で行う
 ========================================================= */
 :root{
-  --felt:      #0f251e;   /* 背景：ボードの深い緑 */
-  --felt-2:    #15322a;   /* 一段浮いた面 */
-  --felt-3:    #1c3f35;   /* 選択中・ホバー */
-  --brass:     #d4b06a;   /* 真鍮：線と強調 */
-  --brass-dim: rgba(212,176,106,.26);
-  --ivory:     #efe7d4;   /* 本文 */
-  --muted:     #9fb0a5;   /* 補足（緑寄りのグレー） */
-  --red:       #c8442f;   /* ブル・トリプルの赤（ごく少量） */
+  --ink:     #000000;   /* 写真の潰れた黒 */
+  --ink-2:   #161616;   /* 一段浮いた面 */
+  --chalk:   #ebebe8;   /* 写真のハイライト */
+  --smoke:   #8e8e8a;   /* 補足文字 */
+  --rule:    rgba(235,235,232,.16);
+  --rule-2:  rgba(235,235,232,.38);
 
-  --f-latin: 'Bodoni Moda', 'Didot', 'Times New Roman', serif;
-  --f-head:  'Zen Old Mincho', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
-  --f-body:  'Zen Kaku Gothic New', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', sans-serif;
+  --f-num:  'Big Shoulders Display', 'Arial Narrow', 'Helvetica Neue', sans-serif;
+  --f-head: 'Dela Gothic One', 'Hiragino Sans', 'Yu Gothic', sans-serif;
+  --f-body: 'Zen Kaku Gothic New', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', sans-serif;
+
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 
   color-scheme: dark;
 }
 
 *{ box-sizing: border-box; }
 html{ scroll-behavior: smooth; }
-
 body{
   margin: 0;
-  background: var(--felt);
-  color: var(--ivory);
+  background: var(--ink);
+  color: var(--chalk);
   font-family: var(--f-body);
   font-size: 15px;
-  line-height: 1.85;
+  line-height: 1.8;
   -webkit-font-smoothing: antialiased;
 }
-
 a{ color: inherit; }
+img{ max-width: 100%; }
 
 .wrap{
-  max-width: 1040px;
+  max-width: 1200px;
   margin: 0 auto;
   padding-left: max(20px, env(safe-area-inset-left, 0px));
   padding-right: max(20px, env(safe-area-inset-right, 0px));
 }
 
 /* =========================================================
-   ヒーロー
+   ヒーロー：写真スライド
 ========================================================= */
 .hero{
-  border-bottom: 1px solid var(--brass-dim);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: min(92svh, 860px);
+  min-height: min(92vh, 860px);
   overflow: hidden;
+  isolation: isolate;
 }
-.hero__inner{
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 420px);
-  align-items: center;
-  gap: 32px;
-  padding-block: clamp(48px, 9vw, 96px);
-}
-.hero__text{ min-width: 0; }
+@supports (min-height: 1svh){ .hero{ min-height: min(92svh, 860px); } }
 
+.hero__slides{ position: absolute; inset: 0; z-index: -2; }
+.slide{
+  position: absolute; inset: 0;
+  margin: 0;
+  opacity: 0;
+  transition: opacity 1.4s ease;
+}
+.slide.is-active{ opacity: 1; }
+.slide img{
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: 55% 45%;
+  filter: grayscale(1) contrast(1.12) brightness(.82);
+  transform: scale(1.04);
+}
+.slide.is-active img{ animation: drift 9s linear both; }
+@keyframes drift{ from{ transform: scale(1.04); } to{ transform: scale(1.12); } }
+
+/* フィルムのざらつき＋周辺減光 */
+.hero__grain{
+  position: absolute; inset: 0; z-index: -1;
+  pointer-events: none;
+  background:
+    var(--grain),
+    radial-gradient(ellipse 85% 75% at 50% 45%, transparent 40%, rgba(0,0,0,.75) 100%),
+    linear-gradient(180deg, rgba(0,0,0,.45) 0%, transparent 22%, transparent 48%, rgba(0,0,0,.92) 100%);
+  background-size: 200px 200px, auto, auto;
+  mix-blend-mode: normal;
+  opacity: .9;
+}
+
+.hero__top{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: max(20px, env(safe-area-inset-top, 0px));
+}
 .hero__venue{
   margin: 0;
-  font-family: var(--f-latin);
-  font-style: italic;
-  font-size: clamp(17px, 2vw, 21px);
-  color: var(--brass);
+  font-family: var(--f-num);
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: .04em;
+  white-space: nowrap;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+.hero__nav{ display: flex; align-items: center; gap: 6px; }
+.hero__count{
+  margin-right: 8px;
+  font-family: var(--f-num);
+  font-weight: 600;
+  font-size: 16px;
+  font-variant-numeric: tabular-nums;
+  color: var(--chalk);
+  white-space: nowrap;
+}
+.hero__btn{
+  appearance: none;
+  display: grid; place-items: center;
+  width: 40px; height: 40px;
+  padding: 0;
+  border: 1px solid var(--rule-2);
+  border-radius: 50%;
+  background: rgba(0,0,0,.35);
+  color: var(--chalk);
+  cursor: pointer;
+}
+.hero__btn:hover{ background: var(--chalk); color: var(--ink); }
+.hero__btn svg{ width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.hero__bottom{ width: 100%; padding-bottom: 28px; }
 .hero__mark{
-  margin: 0 0 8px;
-  font-family: var(--f-latin);
-  font-weight: 400;
-  font-size: clamp(120px, 22vw, 232px);
-  line-height: .86;
-  letter-spacing: -.02em;
-  color: var(--ivory);
-}
-.hero__lead{
-  margin: 0 0 28px;
-  color: var(--muted);
+  margin: 0;
+  font-family: var(--f-num);
+  font-weight: 900;
+  font-size: clamp(150px, 34vw, 430px);
+  line-height: .74;
+  letter-spacing: -.01em;
+  color: var(--chalk);
+  margin-left: -.03em;
 }
 .hero__latest{
-  margin: 0;
+  margin: 18px 0 0;
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 4px 14px;
-  padding-top: 18px;
-  border-top: 1px solid var(--brass-dim);
-  max-width: 420px;
+  gap: 2px 18px;
   font-size: 14px;
-  color: var(--muted);
+  color: var(--chalk);
 }
-.hero__latest b{
-  font-family: var(--f-head);
-  font-weight: 700;
-  font-size: 22px;
-  color: var(--ivory);
-}
+.hero__latest .k{ color: var(--smoke); }
+.hero__latest b{ font-family: var(--f-head); font-weight: 400; font-size: 20px; }
 .hero__latest a{
-  margin-left: auto;
-  color: var(--brass);
-  text-underline-offset: 4px;
-}
-
-/* ラインアートのダーツボード（script.jsで描画） */
-.hero__board{ min-width: 0; }
-.board{ width: 100%; max-width: 420px; height: auto; display: block; margin-left: auto; }
-.board .ring{ fill: none; stroke: var(--brass); stroke-width: .9; opacity: .75; }
-.board .wire{ stroke: var(--brass); stroke-width: .6; opacity: .45; }
-.board .cell-red{ fill: var(--red); opacity: .9; }
-.board .cell-green{ fill: var(--felt-3); }
-.board .bull{ fill: var(--red); }
-.board .num{
-  fill: var(--brass);
-  font-family: var(--f-latin);
-  font-size: 15px;
-  text-anchor: middle;
-  dominant-baseline: central;
-}
-.board .dart{ transform-origin: 0 0; animation: dart-in .7s cubic-bezier(.2,.9,.25,1) .35s both; }
-.board .dart line{ stroke: var(--ivory); stroke-width: 2.4; stroke-linecap: round; }
-.board .dart path{ fill: var(--red); }
-@keyframes dart-in{
-  from{ transform: translate(150px, 150px); opacity: 0; }
-  to  { transform: translate(0, 0);         opacity: 1; }
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 1px solid var(--chalk);
 }
 
 /* =========================================================
-   見出し
+   歴代の大会（得点板）
 ========================================================= */
-.sec-head{
+.board-sec{ padding-block: 72px 96px; }
+.board-sec__head{
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
+  align-items: flex-end;
   justify-content: space-between;
-  gap: 8px 24px;
-  margin-bottom: 24px;
+  gap: 12px 32px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid var(--chalk);
 }
 .sec-title{
   margin: 0;
   font-family: var(--f-head);
-  font-weight: 700;
-  font-size: clamp(22px, 3vw, 28px);
-  text-wrap: balance;
+  font-weight: 400;
+  font-size: clamp(28px, 4.4vw, 44px);
+  line-height: 1.2;
 }
 .tally{
   margin: 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 4px 18px;
+  align-items: baseline;
+  gap: 2px 22px;
   font-size: 13px;
-  color: var(--muted);
+  color: var(--smoke);
 }
-.tally b{ color: var(--brass); font-weight: 500; font-family: var(--f-latin); font-size: 17px; margin-left: 4px; }
-
-/* =========================================================
-   歴代の大会（年表）
-========================================================= */
-.roll-sec{ padding-block: 64px 24px; }
-
-.roll{
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  border-top: 1px solid var(--brass-dim);
-  border-left: 1px solid var(--brass-dim);
-}
-.roll__item{
-  appearance: none;
-  display: grid;
-  grid-template-rows: auto auto 1fr;
-  gap: 2px;
-  min-width: 0;
-  padding: 18px 18px 20px;
-  text-align: left;
-  font: inherit;
-  color: var(--ivory);
-  background: transparent;
-  border: 0;
-  border-right: 1px solid var(--brass-dim);
-  border-bottom: 1px solid var(--brass-dim);
-  cursor: pointer;
-  transition: background-color .2s ease;
-}
-.roll__item:hover{ background: var(--felt-2); }
-.roll__item[aria-selected="true"]{
-  background: var(--felt-3);
-  box-shadow: inset 0 -3px 0 var(--brass);
-}
-.roll__no{
-  font-family: var(--f-latin);
-  font-size: 52px;
+.tally span b{
+  margin-left: 6px;
+  font-family: var(--f-num);
+  font-weight: 800;
+  font-size: 28px;
   line-height: 1;
-  color: var(--brass);
+  color: var(--chalk);
 }
-.roll__date{
-  font-size: 12px;
-  color: var(--muted);
+.tally span:first-child{ color: var(--smoke); }
+
+.list{ display: flex; flex-direction: column; }
+
+.row{ border-bottom: 1px solid var(--rule); }
+
+.row__head{
+  appearance: none;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 7.5rem 8.5rem minmax(0, 1.2fr) minmax(0, 1fr) 6.5rem 32px;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 12px;
+  border: 0;
+  background: transparent;
+  color: var(--chalk);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.row__head:hover{ background: var(--ink-2); }
+.row.is-open .row__head{ background: var(--chalk); color: var(--ink); }
+.row.is-open .row__head .c-label,
+.row.is-open .row__head .row__date{ color: #4a4a48; }
+
+.row__no{
+  font-family: var(--f-num);
+  font-weight: 900;
+  font-size: 76px;
+  line-height: .85;
   font-variant-numeric: tabular-nums;
 }
-.roll__champ{
-  margin-top: 10px;
-  font-family: var(--f-head);
-  font-weight: 700;
-  font-size: 18px;
-  line-height: 1.4;
-  overflow-wrap: anywhere;
+.row__date{
+  font-family: var(--f-num);
+  font-weight: 600;
+  font-size: 20px;
+  color: var(--smoke);
+  font-variant-numeric: tabular-nums;
 }
-.roll__champ small{
-  display: block;
-  font-family: var(--f-body);
-  font-weight: 400;
-  font-size: 11px;
-  color: var(--muted);
+.c-label{ display: block; font-size: 11px; line-height: 1.4; color: var(--smoke); }
+.row__champ{ font-family: var(--f-head); font-size: 26px; line-height: 1.3; overflow-wrap: anywhere; }
+.row__runner{ font-size: 16px; font-weight: 700; overflow-wrap: anywhere; }
+.row__score{ font-family: var(--f-num); font-weight: 800; font-size: 34px; line-height: 1; font-variant-numeric: tabular-nums; }
+.row__toggle{
+  width: 28px; height: 28px;
+  fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round;
+  transition: transform .3s ease;
 }
+.row.is-open .row__toggle{ transform: rotate(45deg); }
 
-/* =========================================================
-   大会の詳細
-========================================================= */
-.detail-sec{ padding-block: 24px 72px; }
+/* 展開部分 */
+.row__panel{
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows .4s ease;
+}
+.row.is-open .row__panel{ grid-template-rows: 1fr; }
+.row__panel-inner{ overflow: hidden; min-height: 0; }
 
 .detail{
-  background: var(--felt-2);
-  border: 1px solid var(--brass-dim);
-  padding: clamp(22px, 4vw, 44px);
-  animation: detail-in .35s ease both;
-}
-@keyframes detail-in{ from{ opacity: .3; transform: translateY(6px); } to{ opacity: 1; transform: none; } }
-
-.detail__head{
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: end;
-  gap: 8px 28px;
-  padding-bottom: 22px;
-  border-bottom: 1px solid var(--brass-dim);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+  gap: 28px 48px;
+  padding: 32px 12px 44px;
 }
-.detail__title{
-  margin: 0;
-  font-family: var(--f-latin);
-  font-weight: 400;
-  font-size: clamp(56px, 9vw, 96px);
-  line-height: .9;
-}
-.detail__meta{
-  margin: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px 26px;
-  justify-content: flex-end;
-}
-.detail__meta div{ display: flex; flex-direction: column; }
-.detail__meta dt{ font-size: 11px; color: var(--muted); }
-.detail__meta dd{ margin: 0; font-size: 15px; font-variant-numeric: tabular-nums; }
-
 .detail__quote{
-  margin: 28px 0 32px;
+  margin: 0 0 24px;
   font-family: var(--f-head);
-  font-weight: 700;
-  font-size: clamp(20px, 2.8vw, 26px);
-  line-height: 1.6;
+  font-size: clamp(22px, 3vw, 32px);
+  line-height: 1.5;
   text-wrap: balance;
 }
+.facts{ margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 8px 20px; font-size: 14px; }
+.facts dt{ color: var(--smoke); }
+.facts dd{ margin: 0; overflow-wrap: anywhere; }
+.facts .big{ font-family: var(--f-num); font-weight: 800; font-size: 22px; line-height: 1.2; }
 
-.detail__grid{
-  display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-  gap: 28px;
-  align-items: start;
-}
-
-/* 順位 */
-.podium{ list-style: none; margin: 0; padding: 0; }
-.podium li{
-  display: grid;
-  grid-template-columns: 5.5em minmax(0, 1fr) auto;
-  align-items: baseline;
-  gap: 12px;
-  padding: 12px 0;
-  border-bottom: 1px solid var(--brass-dim);
-}
-.podium li:first-child{ padding-top: 0; }
-.podium__rank{ font-size: 13px; color: var(--muted); }
-.podium__name{
-  font-family: var(--f-head);
+.sheet-link{
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 28px;
+  padding: 12px 20px;
+  border: 1px solid var(--chalk);
+  font-size: 14px;
   font-weight: 700;
-  font-size: 20px;
-  overflow-wrap: anywhere;
+  text-decoration: none;
 }
-.podium__note{ font-size: 12px; color: var(--brass); }
-.podium li.is-champ .podium__rank{ color: var(--brass); }
-.podium li.is-champ .podium__name{ font-size: 30px; }
+.sheet-link:hover{ background: var(--chalk); color: var(--ink); }
+.sheet-link svg{ width: 16px; height: 16px; flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
-/* 最高得点 */
-.hiscore{
-  border: 1px solid var(--brass-dim);
-  padding: 18px 20px 20px;
-}
-.hiscore + .hiscore{ margin-top: 12px; }
-.hiscore__label{ margin: 0; font-size: 12px; color: var(--muted); }
-.hiscore__value{
-  margin: 4px 0 2px;
-  font-family: var(--f-latin);
-  font-size: 64px;
-  line-height: 1;
-  color: var(--brass);
-  font-variant-numeric: lining-nums tabular-nums;
-}
-.hiscore__name{ margin: 0; font-family: var(--f-head); font-weight: 700; font-size: 18px; }
-
-/* 動画（クリックでプレーヤーを読み込む） */
+/* 動画（タップでプレーヤーを読み込む） */
 .video{
   position: relative;
   display: block;
   width: 100%;
   max-width: 100%;
   aspect-ratio: 16 / 9;
-  margin-top: 36px;
   padding: 0;
-  border: 1px solid var(--brass-dim);
-  background: var(--felt) center / cover no-repeat;
-  color: var(--ivory);
-  cursor: pointer;
+  border: 0;
+  background: var(--ink-2);
+  color: var(--chalk);
   overflow: hidden;
-  text-decoration: none;
+  cursor: pointer;
   font: inherit;
+  text-decoration: none;
+}
+.video__thumb{
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.15) brightness(.7);
 }
 .video::after{
   content: "";
   position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(15,37,30,0) 40%, rgba(15,37,30,.85));
+  background: var(--grain);
+  background-size: 200px 200px;
+  opacity: .5;
+  pointer-events: none;
 }
 .video__play{
   position: absolute;
-  left: 22px; bottom: 18px;
+  left: 50%; top: 50%;
   z-index: 1;
+  translate: -50% -50%;
   display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 14px;
-  font-weight: 700;
-}
-.video__play svg{
-  width: 46px; height: 46px;
-  padding: 13px 11px 13px 15px;
-  border-radius: 50%;
-  background: var(--brass);
-  fill: var(--felt);
-  transition: transform .2s ease;
-}
-.video:hover .video__play svg{ transform: scale(1.06); }
-.video iframe{ position: absolute; inset: 0; width: 100%; height: 100%; border: 0; z-index: 2; }
-
-/* スコア表リンク */
-.sheet-link{
-  display: inline-flex;
+  flex-direction: column;
   align-items: center;
   gap: 10px;
-  margin-top: 28px;
-  padding: 12px 22px;
-  border: 1px solid var(--brass);
-  color: var(--brass);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
-  text-decoration: none;
+}
+.video__play i{
+  display: grid; place-items: center;
+  width: 64px; height: 64px;
+  border: 2px solid var(--chalk);
+  border-radius: 50%;
+  background: rgba(0,0,0,.35);
   transition: background-color .2s ease, color .2s ease;
 }
-.sheet-link:hover{ background: var(--brass); color: var(--felt); }
-.sheet-link svg{ width: 16px; height: 16px; flex: 0 0 auto; }
+.video:hover .video__play i{ background: var(--chalk); color: var(--ink); }
+.video__play svg{ width: 20px; height: 20px; margin-left: 4px; fill: currentColor; }
+.video iframe{ position: absolute; inset: 0; width: 100%; height: 100%; border: 0; z-index: 2; }
+.no-video{
+  display: grid; place-items: center;
+  aspect-ratio: 16 / 9;
+  border: 1px dashed var(--rule-2);
+  color: var(--smoke);
+  font-size: 13px;
+}
 
-.empty{ color: var(--muted); }
+.empty{ color: var(--smoke); padding: 24px 0; }
 
 /* =========================================================
    フッター
 ========================================================= */
-.site-footer{
-  padding-block: 28px 56px;
-  border-top: 1px solid var(--brass-dim);
-  color: var(--muted);
-  font-family: var(--f-latin);
-  font-style: italic;
-  font-size: 14px;
+.site-footer{ border-top: 1px solid var(--rule); }
+.site-footer p{
+  margin: 0;
+  padding-block: 28px 48px;
+  font-family: var(--f-num);
+  font-weight: 800;
+  font-size: 16px;
+  letter-spacing: .04em;
+  color: var(--smoke);
 }
-.site-footer p{ margin: 0; }
 
 /* =========================================================
    レスポンシブ
 ========================================================= */
-@media (max-width: 760px){
-  .hero__inner{ grid-template-columns: 1fr; gap: 8px; }
-  .hero__board{ order: -1; }
-  .board{ max-width: 260px; margin: 0 auto; }
-  .hero__mark{ font-size: clamp(110px, 34vw, 160px); }
-  .roll{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .roll__item{ padding: 14px 12px 16px; }
-  .roll__no{ font-size: 40px; }
-  .roll__champ{ font-size: 16px; }
-  .detail__head{ grid-template-columns: 1fr; }
-  .detail__meta{ justify-content: flex-start; }
-  .detail__grid{ grid-template-columns: 1fr; }
+@media (max-width: 860px){
+  .row__head{ grid-template-columns: 4.6rem minmax(0, 1fr) 4.5rem 28px; gap: 12px; padding: 14px 8px; }
+  .row__date{ grid-column: 2; grid-row: 2; font-size: 16px; margin-top: -6px; }
+  .row__no{ grid-row: 1 / span 2; font-size: 60px; }
+  .row__champ{ grid-column: 2; grid-row: 1; font-size: 22px; }
+  .row__runner{ display: none; }
+  .row__score{ grid-column: 3; grid-row: 1 / span 2; font-size: 28px; text-align: right; }
+  .row__toggle{ grid-column: 4; grid-row: 1 / span 2; }
+  .detail{ grid-template-columns: 1fr; padding: 24px 8px 36px; }
 }
-@media (max-width: 380px){
-  .roll{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 520px){
+  .hero{ min-height: min(78svh, 680px); }
+  .hero__mark{ font-size: 46vw; }
+  .hero__venue{ font-size: 15px; }
+  .hero__btn{ width: 36px; height: 36px; }
+  .row__score .c-label{ display: none; }
 }
 
-:focus-visible{ outline: 2px solid var(--brass); outline-offset: 3px; }
+:focus-visible{ outline: 2px solid var(--chalk); outline-offset: 3px; }
+.row.is-open .row__head:focus-visible{ outline-color: var(--chalk); outline-offset: -4px; outline-color: var(--ink); }
 
 @media (prefers-reduced-motion: reduce){
   html{ scroll-behavior: auto; }
-  .board .dart, .detail{ animation: none; }
-  .roll__item, .sheet-link, .video__play svg{ transition: none; }
+  .slide{ transition: none; }
+  .slide.is-active img{ animation: none; }
+  .row__panel, .row__toggle{ transition: none; }
 }

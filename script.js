@@ -1,208 +1,198 @@
 /**
- * TOURNAMENTS配列（tournaments-data.js）を元に、
- * ヒーローの最新大会・優勝回数・歴代の大会・選んだ回の詳細を自動で描画します。
+ * ・トップの写真スライド
+ * ・TOURNAMENTS配列（tournaments-data.js）から大会リストを自動生成
  * 大会を追加するときはこのファイルを触る必要はありません。
  */
 (function () {
   "use strict";
 
+  setupSlides();
+
   const data = typeof TOURNAMENTS !== "undefined" && Array.isArray(TOURNAMENTS) ? TOURNAMENTS : [];
-  const sorted = [...data].sort((a, b) => a.number - b.number);
+  const list = document.getElementById("list");
+  // 新しい回を上に表示
+  const items = [...data].sort((a, b) => b.number - a.number);
 
-  const $ = (id) => document.getElementById(id);
-  const rollEl = $("roll");
-  const detailEl = $("detail");
-
-  drawBoard($("board"));
-
-  if (sorted.length === 0) {
-    detailEl.innerHTML = '<p class="empty">まだ大会データがありません。tournaments-data.js に大会を追加すると、ここに表示されます。</p>';
+  if (items.length === 0) {
+    list.innerHTML = '<p class="empty">まだ大会データがありません。tournaments-data.js に大会を追加すると、ここに表示されます。</p>';
     return;
   }
 
-  const latest = sorted[sorted.length - 1];
+  const latest = items[0];
 
   // ---------- ヒーロー：最新大会 ----------
-  $("latest").innerHTML = `
-    <span>最新は第${latest.number}回（${esc(latest.date || "")}）</span>
-    <span>優勝 <b>${esc(latest.champion || "―")}</b></span>
-    <a href="#vdc-${latest.number}" data-go="${latest.number}">結果を見る</a>`;
+  document.getElementById("latest").innerHTML = `
+    <span><span class="k">最新</span> 第${latest.number}回 ${esc(fmtDate(latest.date))}</span>
+    <span><span class="k">優勝</span> <b>${esc(latest.champion || "―")}</b></span>
+    <a href="#vdc-${latest.number}" data-open="${latest.number}">結果を見る</a>`;
 
   // ---------- 優勝回数 ----------
   const wins = {};
-  sorted.forEach((t) => { if (t.champion) wins[t.champion] = (wins[t.champion] || 0) + 1; });
-  const tally = Object.entries(wins).sort((a, b) => b[1] - a[1]);
-  $("tally").innerHTML =
-    "<span>優勝回数</span>" + tally.map(([name, n]) => `<span>${esc(name)}<b>${n}</b></span>`).join("");
+  items.forEach((t) => { if (t.champion) wins[t.champion] = (wins[t.champion] || 0) + 1; });
+  document.getElementById("tally").innerHTML =
+    "<span>優勝回数</span>" +
+    Object.entries(wins)
+      .sort((a, b) => b[1] - a[1])
+      .map(([name, n]) => `<span>${esc(name)}<b>${n}</b></span>`)
+      .join("");
 
-  // ---------- 歴代の大会 ----------
-  rollEl.innerHTML = sorted
-    .map(
-      (t) => `
-      <button type="button" class="roll__item" role="tab" id="tab-${t.number}"
-        aria-controls="detail" aria-selected="false" data-go="${t.number}">
-        <span class="roll__no">${t.number}</span>
-        <span class="roll__date">${esc(t.date || "")}</span>
-        <span class="roll__champ"><small>優勝</small>${esc(t.champion || "―")}</span>
-      </button>`
-    )
-    .join("");
+  // ---------- 大会リスト ----------
+  list.innerHTML = items.map(rowHtml).join("");
 
-  document.addEventListener("click", (e) => {
-    const go = e.target.closest("[data-go]");
-    if (!go) return;
-    e.preventDefault();
-    select(Number(go.dataset.go), go.tagName === "A");
+  list.addEventListener("click", (e) => {
+    const head = e.target.closest(".row__head");
+    if (head) {
+      const row = head.closest(".row");
+      toggle(row, !row.classList.contains("is-open"));
+      return;
+    }
+    const v = e.target.closest("button.video");
+    if (v && !v.querySelector("iframe")) {
+      v.insertAdjacentHTML(
+        "beforeend",
+        `<iframe src="https://www.youtube.com/embed/${encodeURIComponent(v.dataset.id)}?autoplay=1"
+          title="${esc(v.dataset.title)} 大会動画"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen></iframe>`
+      );
+    }
   });
 
-  // URLの #vdc-3 のような指定があればその回、なければ最新回を表示
-  const fromHash = Number((location.hash.match(/^#vdc-(\d+)$/) || [])[1]);
-  select(sorted.some((t) => t.number === fromHash) ? fromHash : latest.number, false);
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest("a[data-open]");
+    if (!a) return;
+    e.preventDefault();
+    const row = document.getElementById(`vdc-${a.dataset.open}`);
+    toggle(row, true);
+    row.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
 
-  // ---------- 詳細 ----------
-  function select(number, scroll) {
-    const t = sorted.find((x) => x.number === number);
-    if (!t) return;
+  // URLの #vdc-3 のような指定があればその回、なければ最新回を開いておく
+  const fromHash = document.getElementById((location.hash || "").slice(1));
+  toggle(fromHash && fromHash.classList.contains("row") ? fromHash : list.querySelector(".row"), true);
 
-    rollEl.querySelectorAll(".roll__item").forEach((b) =>
-      b.setAttribute("aria-selected", String(Number(b.dataset.go) === number))
-    );
-    detailEl.setAttribute("aria-labelledby", `tab-${number}`);
-    try { history.replaceState(null, "", `#vdc-${number}`); } catch (_) {}
+  function toggle(row, open) {
+    if (!row) return;
+    row.classList.toggle("is-open", open);
+    row.querySelector(".row__head").setAttribute("aria-expanded", String(open));
+  }
 
+  function rowHtml(t) {
     const ranks = [];
     const scores = [];
     (t.results || []).forEach((r) => {
       const m = String(r.rank).match(/^最高得点\s*[（(]?([^)）：:]*)[)）]?\s*[：:]\s*(\d+)/);
-      if (m) scores.push({ game: m[1].trim(), value: m[2], name: r.name });
+      if (m) scores.push({ game: gameName(m[1].trim()), value: m[2], name: r.name });
       else ranks.push(r);
     });
+    const top = scores[0];
+    const no = String(t.number).padStart(2, "0");
+    const pid = `vdc-${t.number}-panel`;
 
-    const meta = [
-      ["開催日", t.date],
+    const facts = [
+      ["開催日", fmtDate(t.date)],
       ["参加人数", t.participants != null ? `${t.participants}名` : ""],
-      ["形式", t.format],
-    ].filter(([, v]) => v);
+      ["形式", t.format || ""],
+    ]
+      .filter(([, v]) => v)
+      .map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`)
+      .join("");
 
-    detailEl.innerHTML = `
-      <article class="detail">
-        <header class="detail__head">
-          <h2 class="detail__title">${esc(t.title || `VDC ${t.number}`)}</h2>
-          <dl class="detail__meta">
-            ${meta.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join("")}
-          </dl>
-        </header>
+    const rankFacts = ranks
+      .map((r) => `<dt>${esc(r.rank)}</dt><dd><span class="big">${esc(r.name)}</span>${r.note ? `　${esc(r.note)}` : ""}</dd>`)
+      .join("");
 
-        ${t.highlight ? `<p class="detail__quote">${esc(t.highlight)}</p>` : ""}
+    const scoreFacts = scores
+      .map((s) => `<dt>最高得点${s.game ? `<br>${esc(s.game)}` : ""}</dt><dd><span class="big">${esc(s.value)}</span>　${esc(s.name)}</dd>`)
+      .join("");
 
-        <div class="detail__grid">
-          ${
-            ranks.length
-              ? `<ol class="podium">${ranks
-                  .map(
-                    (r, i) => `
-                <li class="${i === 0 ? "is-champ" : ""}">
-                  <span class="podium__rank">${esc(r.rank)}</span>
-                  <span class="podium__name">${esc(r.name)}</span>
-                  <span class="podium__note">${esc(r.note || "")}</span>
-                </li>`
-                  )
-                  .join("")}</ol>`
-              : `<p class="empty">結果は追って更新します。</p>`
-          }
-          <div>
-            ${scores
-              .map(
-                (s) => `
-              <div class="hiscore">
-                <p class="hiscore__label">最高得点${s.game ? `（${esc(gameName(s.game))}）` : ""}</p>
-                <p class="hiscore__value">${esc(s.value)}</p>
-                <p class="hiscore__name">${esc(s.name)}</p>
-              </div>`
-              )
-              .join("")}
+    const video = t.youtubeId ? videoHtml(t) : "";
+
+    return `
+    <article class="row" id="vdc-${t.number}">
+      <button type="button" class="row__head" aria-expanded="false" aria-controls="${pid}">
+        <span class="row__no" aria-label="第${t.number}回">${no}</span>
+        <span class="row__date">${esc(fmtDate(t.date))}</span>
+        <span class="row__champ"><span class="c-label">優勝</span>${esc(t.champion || "―")}</span>
+        <span class="row__runner"><span class="c-label">準優勝</span>${esc(t.runnerUp || "―")}</span>
+        <span class="row__score">${top ? `<span class="c-label">最高得点</span>${esc(top.value)}` : ""}</span>
+        <svg class="row__toggle" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v16M4 12h16"/></svg>
+      </button>
+      <div class="row__panel" id="${pid}">
+        <div class="row__panel-inner">
+          <div class="detail"${video ? "" : ' style="grid-template-columns:minmax(0,1fr)"'}>
+            <div>
+              ${t.highlight ? `<p class="detail__quote">${esc(t.highlight)}</p>` : ""}
+              <dl class="facts">${facts}${rankFacts}${scoreFacts}</dl>
+              ${
+                t.sheetUrl
+                  ? `<a class="sheet-link" href="${esc(t.sheetUrl)}" target="_blank" rel="noopener">
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3h7v7M21 3l-9 9M5 5h6M5 12h6M5 19h14M19 12v7"/></svg>
+                      スコア詳細をスプレッドシートで見る
+                    </a>`
+                  : ""
+              }
+            </div>
+            ${video}
           </div>
         </div>
-
-        ${t.youtubeId ? videoHtml(t) : ""}
-
-        ${
-          t.sheetUrl
-            ? `<a class="sheet-link" href="${esc(t.sheetUrl)}" target="_blank" rel="noopener">
-                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M14 3h7v7M21 3l-9 9M5 5h6M5 12h6M5 19h14M19 12v7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                スコア詳細をスプレッドシートで見る
-              </a>`
-            : ""
-        }
-      </article>`;
-
-    const v = detailEl.querySelector("button.video");
-    if (v) {
-      v.addEventListener("click", () => {
-        v.insertAdjacentHTML(
-          "beforeend",
-          `<iframe src="https://www.youtube.com/embed/${encodeURIComponent(t.youtubeId)}?autoplay=1"
-            title="${esc(t.title)} 大会動画"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen></iframe>`
-        );
-      }, { once: true });
-    }
-
-    if (scroll) detailEl.scrollIntoView({ behavior: "smooth", block: "start" });
+      </div>
+    </article>`;
   }
 
   function videoHtml(t) {
     const id = encodeURIComponent(t.youtubeId);
-    const play = `<span class="video__play"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M0 0L20 10L0 20Z"/></svg>大会の動画を再生</span>`;
+    const play = `<span class="video__play"><i><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M2 0L20 10L2 20Z"/></svg></i>動画を再生</span>`;
     // プレビュー表示用（YouTubeを埋め込めない環境ではリンクにする）
     if (window.VDC_PREVIEW) {
       return `<a class="video" href="https://www.youtube.com/watch?v=${id}" target="_blank" rel="noopener">${play}</a>`;
     }
-    return `<button type="button" class="video" style="background-image:url('https://i.ytimg.com/vi/${id}/hqdefault.jpg')">${play}</button>`;
+    return `<button type="button" class="video" data-id="${esc(t.youtubeId)}" data-title="${esc(t.title || "")}">
+      <img class="video__thumb" src="https://i.ytimg.com/vi/${id}/hqdefault.jpg" alt="" loading="lazy" onerror="this.remove()">${play}</button>`;
   }
 
+  // ---------- 写真スライド ----------
+  function setupSlides() {
+    const slides = [...document.querySelectorAll(".slide")];
+    const count = document.getElementById("slideCount");
+    const prev = document.getElementById("slidePrev");
+    const next = document.getElementById("slideNext");
+    if (slides.length === 0) return;
+    if (slides.length < 2) {
+      document.querySelector(".hero__nav").hidden = true;
+      return;
+    }
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let i = 0;
+    let timer = null;
+
+    const show = (n) => {
+      slides[i].classList.remove("is-active");
+      i = (n + slides.length) % slides.length;
+      slides[i].classList.add("is-active");
+      count.textContent = `${i + 1} / ${slides.length}`;
+    };
+    const start = () => {
+      if (still) return;
+      clearInterval(timer);
+      timer = setInterval(() => show(i + 1), 6500);
+    };
+
+    prev.addEventListener("click", () => { show(i - 1); start(); });
+    next.addEventListener("click", () => { show(i + 1); start(); });
+    document.addEventListener("visibilitychange", () => (document.hidden ? clearInterval(timer) : start()));
+    show(0);
+    start();
+  }
+
+  // ---------- 小さな道具 ----------
+  function fmtDate(d) {
+    const m = String(d || "").match(/(\d{4})\D+(\d{1,2})\D+(\d{1,2})/);
+    return m ? `${m[1]}.${m[2].padStart(2, "0")}.${m[3].padStart(2, "0")}` : String(d || "");
+  }
   function gameName(g) {
     return /^count\s*-?\s*up$/i.test(g) ? "カウントアップ" : g;
   }
-
-  // ---------- ラインアートのダーツボード ----------
-  function drawBoard(svg) {
-    if (!svg) return;
-    const order = [20, 1, 18, 4, 13, 6, 10, 15, 2, 17, 3, 19, 7, 16, 8, 11, 14, 9, 12, 5];
-    const R = { dOut: 162, dIn: 152, tOut: 100, tIn: 90, ob: 16, bull: 7 };
-    const pt = (r, deg) => {
-      const a = (deg * Math.PI) / 180;
-      return [+(r * Math.sin(a)).toFixed(2), +(-r * Math.cos(a)).toFixed(2)];
-    };
-    const sector = (r1, r2, a1, a2) => {
-      const [x1, y1] = pt(r2, a1), [x2, y2] = pt(r2, a2), [x3, y3] = pt(r1, a2), [x4, y4] = pt(r1, a1);
-      return `M${x1},${y1} A${r2},${r2} 0 0,1 ${x2},${y2} L${x3},${y3} A${r1},${r1} 0 0,0 ${x4},${y4} Z`;
-    };
-
-    let s = "";
-    order.forEach((n, i) => {
-      const a1 = i * 18 - 9, a2 = i * 18 + 9;
-      const cls = i % 2 === 0 ? "cell-red" : "cell-green";
-      s += `<path class="${cls}" d="${sector(R.dIn, R.dOut, a1, a2)}"/>`;
-      s += `<path class="${cls}" d="${sector(R.tIn, R.tOut, a1, a2)}"/>`;
-      const [x0, y0] = pt(R.ob, a1), [x1, y1] = pt(R.dOut, a1);
-      s += `<line class="wire" x1="${x0}" y1="${y0}" x2="${x1}" y2="${y1}"/>`;
-      const [nx, ny] = pt(180, i * 18);
-      s += `<text class="num" x="${nx}" y="${ny}">${n}</text>`;
-    });
-    [R.dOut, R.dIn, R.tOut, R.tIn, R.ob].forEach((r) => (s += `<circle class="ring" r="${r}"/>`));
-    s += `<circle class="cell-green" r="${R.ob - 0.5}"/><circle class="bull" r="${R.bull}"/>`;
-    // トリプル20に刺さるダーツ
-    s += `<g transform="translate(0,-95)"><g class="dart">
-            <line x1="0" y1="0" x2="74" y2="74"/>
-            <path d="M66 66 L92 70 L80 80 L70 92 Z"/>
-          </g></g>`;
-    svg.innerHTML = s;
-  }
-
   function esc(str) {
     return String(str ?? "")
       .replace(/&/g, "&amp;")

@@ -19,44 +19,53 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;1,6..96,400;1,6..96,600&family=Zen+Old+Mincho:wght@500;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800;900&family=Dela+Gothic+One&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- ===== ヒーロー ===== -->
-  <header class="hero">
-    <div class="wrap hero__inner">
-      <div class="hero__text">
-        <p class="hero__venue">VORZ BAR Darts Contest</p>
-        <h1 class="hero__mark">VDC</h1>
-        <p class="hero__lead">VORZ BARで行われたダーツ大会の記録です。</p>
-        <p class="hero__latest" id="latest"></p>
+  <!-- ===== ヒーロー（写真スライド） =====
+       写真を増やすときは images/ に入れて、下の <figure> を1つ増やすだけでOK -->
+  <header class="hero" id="hero">
+    <div class="hero__slides">
+      <figure class="slide is-active"><img src="images/hero-1.jpg" alt="VORZ BARのダーツマシンに向かうプレイヤーの後ろ姿"></figure>
+      <figure class="slide"><img src="images/hero-2.jpg" alt="投げる前に構えるプレイヤーと壁に映る影"></figure>
+    </div>
+    <div class="hero__grain" aria-hidden="true"></div>
+
+    <div class="hero__top wrap">
+      <p class="hero__venue">VORZ BAR Darts Contest</p>
+      <div class="hero__nav">
+        <span class="hero__count" id="slideCount" aria-live="polite">1 / 2</span>
+        <button type="button" class="hero__btn" id="slidePrev" aria-label="前の写真">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+        </button>
+        <button type="button" class="hero__btn" id="slideNext" aria-label="次の写真">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+        </button>
       </div>
-      <div class="hero__board" aria-hidden="true">
-        <svg viewBox="-200 -200 400 400" class="board" id="board"></svg>
-      </div>
+    </div>
+
+    <div class="hero__bottom wrap">
+      <h1 class="hero__mark">VDC</h1>
+      <p class="hero__latest" id="latest"></p>
     </div>
   </header>
 
   <main>
-    <!-- ===== 歴代の大会（年表） ===== -->
-    <section class="wrap roll-sec" aria-labelledby="rollTitle">
-      <div class="sec-head">
-        <h2 class="sec-title" id="rollTitle">歴代の大会</h2>
+    <section class="wrap board-sec" aria-labelledby="listTitle">
+      <div class="board-sec__head">
+        <h2 class="sec-title" id="listTitle">歴代の大会</h2>
         <p class="tally" id="tally"></p>
       </div>
-      <nav class="roll" id="roll" role="tablist" aria-label="大会を選ぶ"></nav>
-    </section>
-
-    <!-- ===== 選んだ大会の詳細 ===== -->
-    <section class="wrap detail-sec">
-      <div id="detail" role="tabpanel" aria-live="polite"></div>
+      <div class="list" id="list"></div>
     </section>
   </main>
 
-  <footer class="wrap site-footer">
-    <p>VORZ BAR Darts Contest</p>
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>VORZ BAR Darts Contest</p>
+    </div>
   </footer>
 
   <script src="tournaments-data.js"></script>
